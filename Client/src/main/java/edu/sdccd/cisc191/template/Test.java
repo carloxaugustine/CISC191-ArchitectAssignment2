@@ -1,5 +1,7 @@
 package edu.sdccd.cisc191.template;
 
+import edu.sdccd.cisc191.template.models.Node;
+import edu.sdccd.cisc191.template.models.NumberGuessingGame;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.*;
@@ -14,7 +16,8 @@ class NumberGuessingGameTest {
         Node head = new Node(10);
         for (int i = 5; i > 0; i--) {
             Node newNode = new Node(i);
-            newNode.next = head;
+            newNode.setNext(head);  //Sean Standen - Peer Review
+            //Updated to setter method.
             head = newNode;
         }
         assertTrue(head.search(10)); // Test searching in a linked list
