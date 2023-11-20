@@ -1,89 +1,13 @@
-package edu.sdccd.cisc191.template;
+package edu.sdccd.cisc191.template.models;
 
 import java.io.*;
 import java.net.*;
 import java.util.*;
 
-class Node {
-    int value;
-    Node next;
-
-    public Node(int value) {
-        this.value = value;
-        this.next = null;
-    }
-
-    public void printNodesRecursively() {
-        System.out.print(this.value + " ");
-        if (this.next != null) {
-            this.next.printNodesRecursively();
-        }
-    }
-
-    public boolean search(int target) {
-        Node current = this;
-        while (current != null) {
-            if (current.value == target) {
-                return true;
-            }
-            current = current.next;
-        }
-        return false;
-    }
-}
-
-class User {
-    private String name;
-    private int score;
-
-    public User(String name, int score) {
-        this.name = name;
-        this.score = score;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void sendMessageToServer() {
-        // Adjust this method to actually send data to the server
-        // For now, it just prints a message
-        System.out.println("Sending user data to server: " + this);
-    }
-
-    @Override
-    public String toString() {
-        return "User{name='" + name + "', score=" + score + '}';
-    }
-    public class Message implements Serializable {
-        private String type;
-        private String content;
-
-        public Message(String type, String content) {
-            this.type = type;
-            this.content = content;
-        }
-
-        // Standard getters and setters
-        public String getType() { return type; }
-        public String getContent() { return content; }
-        public void setType(String type) { this.type = type; }
-        public void setContent(String content) { this.content = content; }
-
-        @Override
-        public String toString() {
-            return "Message{" +
-                    "type='" + type + '\'' +
-                    ", content='" + content + '\'' +
-                    '}';
-        }
-    }
-}
-
+//Sean Standen - Peer Review
+//Moved refactored NumberGuessingGame class to models package.
+//Made class public to be accessed in other packages.
+//Removed the main method to it's own class file.
 public class NumberGuessingGame {
 
     Map<String, User> userMap = new HashMap<>();
@@ -102,12 +26,6 @@ public class NumberGuessingGame {
             e.printStackTrace();
         }
     }
-
-    public static void main(String[] args) {
-        NumberGuessingGame game = new NumberGuessingGame();
-        game.startGame();
-    }
-
 
     public void startGame() {
         Scanner scanner = new Scanner(System.in);
@@ -128,9 +46,9 @@ public class NumberGuessingGame {
             int guess = scanner.nextInt();
             attempts++;
 
-            if (guess < secretNumberList.value) {
+            if (guess < secretNumberList.getValue()) {
                 System.out.println("Try higher!");
-            } else if (guess > secretNumberList.value) {
+            } else if (guess > secretNumberList.getValue()) {
                 System.out.println("Try lower!");
             } else {
                 System.out.println("Congratulations! You guessed the number in " + attempts + " attempts.");
@@ -177,7 +95,8 @@ public class NumberGuessingGame {
         for (int i = 0; i < secretNumber; i++) {
             int randomValue = new Random().nextInt(100) + 1;
             Node newNode = new Node(randomValue);
-            current.next = newNode;
+            current.setNext(newNode); //Sean Standen Peer Review - Updated this to setter method instead
+            //of directly accessing the instance variable.
             current = newNode;
         }
 
@@ -190,7 +109,10 @@ public class NumberGuessingGame {
      *
      * @return An ArrayList containing the high scores.
      */
-    static ArrayList<Integer> loadHighScores() {
+
+    //Sean Standen - Peer Review
+    //Made method public as it wasn't accessible outside the class.
+    public static ArrayList<Integer> loadHighScores() {
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("highscores.ser"))) {
             return (ArrayList<Integer>) inputStream.readObject();
         } catch (IOException | ClassNotFoundException e) {
